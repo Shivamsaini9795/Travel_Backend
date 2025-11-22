@@ -8,7 +8,7 @@ COPY src ./src
 RUN mvn -DskipTests clean package
 
 # 2️⃣ Run Stage
-FROM eclipse-temurin:21-jdk   # 👈 FIXED IMAGE
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
