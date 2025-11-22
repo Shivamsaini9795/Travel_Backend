@@ -1,14 +1,18 @@
-# 1️⃣ Use OpenJDK 21 Alpine as base image
-FROM openjdk:21-jdk-alpine
+# 1️⃣ Build Stage
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
-# 2️⃣ Set working directory
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 
-# 3️⃣ Copy jar file from target folder
-COPY target/*.jar app.jar
+RUN mvn -DskipTests clean package
 
-# 4️⃣ Expose port (Render provides dynamic PORT)
+# 2️⃣ Run Stage
+FROM eclipse-temurin:21-jdk   # 👈 FIXED IMAGE
+
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# 5️⃣ Run the jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
