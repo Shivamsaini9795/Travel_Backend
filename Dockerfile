@@ -8,7 +8,7 @@ COPY src ./src
 RUN mvn -DskipTests clean package
 
 # 2️⃣ Run Stage
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:21.0.8_10-jdk-focal  # ✅ Valid tag
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
